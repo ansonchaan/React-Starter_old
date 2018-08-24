@@ -1,0 +1,43 @@
+{
+  "name": "test",
+  "version": "0.1.0",
+  "private": true,
+  "dependencies": {
+    "connected-react-router": "^4.4.1",
+    "cookie-parser": "^1.4.3",
+    "express": "^4.16.3",
+    "forcedomain": "^1.0.0",
+    "ignore-styles": "^5.0.1",
+    "md5-file": "^4.0.0",
+    "memory-cache": "^0.2.0",
+    "morgan": "^1.9.0",
+    "node-schedule": "^1.3.0",
+    "prettier": "^1.14.2",
+    "prismic-javascript": "^1.5.0",
+    "prop-types": "^15.6.2",
+    "react": "^16.0.0",
+    "react-dom": "^16.0.0",
+    "react-frontload": "^1.0.2",
+    "react-helmet": "^5.2.0",
+    "react-loadable": "^5.5.0",
+    "react-redux": "^5.0.7",
+    "react-router-dom": "^4.3.1",
+    "react-scripts": "1.0.14",
+    "redux": "^4.0.0",
+    "redux-thunk": "^2.3.0"
+  },
+  "scripts": {
+    "start": "react-scripts start",
+    "build": "react-scripts build",
+    "test": "react-scripts test --env=jsdom",
+    "eject": "react-scripts eject",
+    "precommit": "lint-staged",
+    "ser": "NODE_ENV=development node ./server/index.js"
+  },
+  "lint-staged": {
+    "src/**/*.{js,jsx,json,css}": [
+      "prettier --single-quote --write",
+      "git add"
+    ]
+  }
+}
