@@ -2,7 +2,7 @@ import React,{ Component } from 'react'
 import {Link} from 'react-router-dom'
 import { connect } from 'react-redux'
 import Html from '../../_component/html'
-import {fetchProjectsData} from '../../reducers'
+import {fetchProjectsData, projectsDataSuccess} from '../../reducers'
 
 class Projects extends Component{
     constructor(props){
@@ -15,6 +15,10 @@ class Projects extends Component{
         return [
             fetchProjectsData()
         ]
+    }
+
+    static pushData(data){
+        return projectsDataSuccess(data)
     }
 
     componentWillMount() {

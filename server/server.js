@@ -19,14 +19,6 @@ const PORT = process.env.PORT || 3000;
 
 
 
-// app.get('/api', (req,res) => {
-//   // myCache.put()
-//   console.log(req.body);
-//   res.json({'a':req.body});
-// });
-
-
-
 // NOTE: UNCOMMENT THIS IF YOU WANT THIS FUNCTIONALITY
 /*
   Forcing www and https redirects in production, totally optional.
@@ -50,6 +42,13 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(morgan('dev'));
 app.use(cookieParser());
+
+
+app.post('/:lang/api', (req,res) => {
+  myCache.put(req.query.keyname,{data: req.body, lang: req.params.lang});
+  console.log('-------------------- Server cache:',myCache.keys());
+});
+
 
 
 // Set up homepage, static assets, and capture everything else

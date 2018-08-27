@@ -80,12 +80,20 @@ export default (req, res) => {
       const promise = routes.reduce((currentActions,route)=>{
         const match = matchPath(req.url,route);
 
-        if(match){
           if(!currentActions.length)
             currentActions.push(store.dispatch(updateLanguage(lang)));
 
           if(route.component){
+            let key = route.key;
             route.component.forEach(function(component){
+
+              // Push data to client
+              if(myCache.get(key)){
+                store.dispatch(component.WrappedComponent.pushData(myCache.get(key).data));
+                console.log('-------------------- Pushed data to client:',key);
+              }
+              
+              if(match){
               // match.params[1] == post slug
               const actions = component.WrappedComponent.actions( match.params[1] ? match.params[1] : null );
 
@@ -94,9 +102,10 @@ export default (req, res) => {
                   currentActions.push(store.dispatch(action));
                 })
               }
+            }
+
             })
           }
-        }
 
         return currentActions;
       },[]);
@@ -105,8 +114,6 @@ export default (req, res) => {
 
       Promise.all(promise)
       .then(s => {
-
-        console.log('server cache: ',myCache.keys())
         const context = {};
         const modules = [];
 

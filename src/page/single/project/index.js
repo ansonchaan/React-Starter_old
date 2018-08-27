@@ -1,13 +1,12 @@
 import React,{Component} from 'react';
 import {connect} from 'react-redux';
 import PropTypes from 'prop-types';
-import {fetchProjectSingleData} from '../../../reducers';
+import {fetchProjectSingleData, projectSingleDataSuccess} from '../../../reducers';
 
 import Html from '../../../_component/html'
 
 class ProjectSingle extends Component {
     static propTypes = {
-        projectData: PropTypes.object,
         lang: PropTypes.string,
     }
 
@@ -21,6 +20,10 @@ class ProjectSingle extends Component {
         return [
             fetchProjectSingleData(title)
         ]
+    }
+
+    static pushData(data){
+        return projectSingleDataSuccess(data)
     }
 
     componentWillMount() {

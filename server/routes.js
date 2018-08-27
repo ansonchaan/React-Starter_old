@@ -6,17 +6,20 @@ const routes = [
     {
         path: '/(en|zh)/',
         exact: true,
-        component: [Home]
+        component: [Home],
+        key:'homeData'
     },
     {
         path: '/(en|zh)/projects/',
         exact: true,
-        component: [Projects]
+        component: [Projects],
+        key:'projectsData'
     },
     {
         path: '/(en|zh)/project/(.+)',
         exact: true,
-        component: [ProjectSingle]
+        component: [ProjectSingle],
+        key:'projectSingleData'
     }
 ]
 

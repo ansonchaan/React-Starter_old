@@ -2,7 +2,7 @@ import React,{ Component } from 'react'
 import { Link } from 'react-router-dom'
 import { connect } from "react-redux"
 import Html from '../../_component/html'
-import {fetchHomeData} from '../../reducers'
+import {fetchHomeData, homeDataSuccess} from '../../reducers'
 
 class Home extends Component{
     constructor(props){
@@ -15,6 +15,10 @@ class Home extends Component{
         return [
             fetchHomeData()
         ]
+    }
+
+    static pushData(data){
+        return homeDataSuccess(data)
     }
 
     componentWillMount() {

@@ -70,16 +70,6 @@ export const fetchHomeData = () => (dispatch, getState) => {
     else
         console.log('-------------------- homeData Cached');
 
-    // fetch("http://localhost:3000/en/api",
-    //     {
-    //         method:'post',
-    //         body: JSON.stringify({a: 123}),
-    //         headers: {"Content-Type": "application/json"}
-    //     }
-    // )
-    // .then(res => res.json())
-    // .then(res => {console.log(res);})
-
     const fetchData = (resolve) => {
         dispatch(homeDataRequest());
         
@@ -93,7 +83,14 @@ export const fetchHomeData = () => (dispatch, getState) => {
                     myCache.put('homeData', { data: response.results[0], lang: lang });
                     resolve(response.results[0])
                     console.log('-------------------- homeData has been Cached')
-                    console.log('client cache:',myCache.keys())
+                    console.log('-------------------- Client cache:',myCache.keys())
+
+                    fetch(`http://localhost:3000/${lang}/api?keyname=homeData`,
+                    {
+                        method:'POST',
+                        body: JSON.stringify(response.results[0]),
+                        headers:{'Content-Type': 'application/json'}
+                    })
                 }
             })
             .catch(err => dispatch(homeDataError(err)));
@@ -107,13 +104,13 @@ export const fetchHomeData = () => (dispatch, getState) => {
 export const fetchProjectsData = () => (dispatch, getState) => {
 
     const state = getState();
-    const cache = myCache.get('projectData');
+    const cache = myCache.get('projectsData');
     let lang = state.lang;
 
     if(!cache)
-        console.log('-------------------- projectData No Cache');
+        console.log('-------------------- projectsData No Cache');
     else
-        console.log('-------------------- projectData Cached');
+        console.log('-------------------- projectsData Cached');
 
     const fetchData = (resolve) => {
         dispatch(projectsDataRequest());
@@ -125,10 +122,17 @@ export const fetchProjectsData = () => (dispatch, getState) => {
             .then(response => {
                 if (response) {
                     dispatch(projectsDataSuccess(response.results));
-                    myCache.put('projectData', { data: response.results, lang: lang });
+                    myCache.put('projectsData', { data: response.results, lang: lang });
                     resolve(response.results)
-                    console.log('-------------------- projectData has been Cached')
-                    console.log('client cache:',myCache.keys())
+                    console.log('-------------------- projectsData has been Cached')
+                    console.log('-------------------- Client cache:',myCache.keys())
+
+                    fetch(`http://localhost:3000/${lang}/api?keyname=projectsData`,
+                    {
+                        method:'POST',
+                        body: JSON.stringify(response.results),
+                        headers:{'Content-Type': 'application/json'}
+                    })
                 }
             })
             .catch(err => dispatch(projectsDataError(err)));
@@ -165,7 +169,7 @@ export const fetchProjectSingleData = (_title) => (dispatch, getState) => {
                     myCache.put('projectSingleData', { data: response.results[0], lang: lang });
                     resolve(response.results[0])
                     console.log('-------------------- projectSingleData has been Cached')
-                    console.log('client cache:',myCache.keys())
+                    console.log('-------------------- Client cache:',myCache.keys())
                 }
             })
             .catch(err => dispatch(projectSingleDataError(err)));
