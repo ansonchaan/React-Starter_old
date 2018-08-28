@@ -90,19 +90,20 @@ export default (req, res) => {
               // Push data to client
               if(myCache.get(key)){
                 store.dispatch(component.WrappedComponent.pushData(myCache.get(key).data));
-                console.log('-------------------- Pushed data to client:',key);
+                console.log('-------------------- Pushed data to client --------------------',key);
               }
               
               if(match){
-              // match.params[1] == post slug
-              const actions = component.WrappedComponent.actions( match.params[1] ? match.params[1] : null );
+                // match.params[1] == post slug
+                const title = decodeURIComponent(match.params[1]).split('/')[0];
+                const actions = component.WrappedComponent.actions( title ? title : null );
 
-              if(Array.isArray(actions)){
-                actions.forEach(function(action){
-                  currentActions.push(store.dispatch(action));
-                })
+                if(Array.isArray(actions)){
+                  actions.forEach(function(action){
+                    currentActions.push(store.dispatch(action));
+                  })
+                }
               }
-            }
 
             })
           }

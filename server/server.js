@@ -47,7 +47,7 @@ app.use(cookieParser());
 app.post('/:lang/api', (req,res) => {
   //save data to server
   myCache.put(req.query.keyname,{data: req.body, lang: req.params.lang});
-  console.log('-------------------- Server cache:',myCache.keys());
+  console.log('-------------------- Server cache:',myCache.keys(),'--------------------');
 });
 
 

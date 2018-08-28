@@ -36,7 +36,7 @@ export const projectSingleDataSuccess = (data) => ({ type: FETCH_PROJECTS_SINGLE
 export const projectSingleDataError = () => ({ type: FETCH_PROJECTS_SINGLE_FAILURE });
 
 
-const promise = ( dataSuccess, dispatch, fetchData, cache, lang, title ) => {
+const promise = ( dataSuccess, dispatch, fetchData, cache, lang, title = null ) => {
     return new Promise(function(resolve){
         if(!cache){
             fetchData(resolve);
@@ -45,16 +45,16 @@ const promise = ( dataSuccess, dispatch, fetchData, cache, lang, title ) => {
             if(cache.data){
                 if(cache.lang !== lang){
                     fetchData(resolve);
-                    console.log('-------------------- different language, fetch again');
+                    console.log('-------------------- different language, fetch again --------------------');
                 }
-                else if(cache.data.uid !== title){
+                else if(title !== null && cache.data.uid !== title){
                     fetchData(resolve);
-                    console.log('-------------------- but different post title, fetch again');
+                    console.log('-------------------- but different post title, fetch again --------------------');
                 }
                 else{
                     dispatch(dataSuccess(cache.data));
                     resolve(cache.data);
-                    console.log('-------------------- use cache data');
+                    console.log('-------------------- use cache data --------------------');
                 }
             }
         }
@@ -68,9 +68,9 @@ export const fetchHomeData = () => (dispatch, getState) => {
     let lang = state.lang;
 
     if(!cache)
-        console.log('-------------------- homeData No Cache');
+        console.log('-------------------- homeData No Cache --------------------');
     else
-        console.log('-------------------- homeData Cached');
+        console.log('-------------------- homeData Cached --------------------');
 
     const fetchData = (resolve) => {
         dispatch(homeDataRequest());
@@ -84,8 +84,8 @@ export const fetchHomeData = () => (dispatch, getState) => {
                     dispatch(homeDataSuccess(response.results[0]));
                     myCache.put('homeData', { data: response.results[0], lang: lang });
                     resolve(response.results[0])
-                    console.log('-------------------- homeData has been Cached')
-                    console.log('-------------------- Client cache:',myCache.keys())
+                    console.log('-------------------- homeData has been Cached --------------------')
+                    console.log('-------------------- Client cache:',myCache.keys(),'--------------------')
 
                     fetch(`http://localhost:3000/${lang}/api?keyname=homeData`,
                     {
@@ -110,9 +110,9 @@ export const fetchProjectsData = () => (dispatch, getState) => {
     let lang = state.lang;
 
     if(!cache)
-        console.log('-------------------- projectsData No Cache');
+        console.log('-------------------- projectsData No Cache --------------------');
     else
-        console.log('-------------------- projectsData Cached');
+        console.log('-------------------- projectsData Cached --------------------');
 
     const fetchData = (resolve) => {
         dispatch(projectsDataRequest());
@@ -126,8 +126,8 @@ export const fetchProjectsData = () => (dispatch, getState) => {
                     dispatch(projectsDataSuccess(response.results));
                     myCache.put('projectsData', { data: response.results, lang: lang });
                     resolve(response.results)
-                    console.log('-------------------- projectsData has been Cached')
-                    console.log('-------------------- Client cache:',myCache.keys())
+                    console.log('-------------------- projectsData has been Cached --------------------')
+                    console.log('-------------------- Client cache:',myCache.keys(),'--------------------')
 
                     fetch(`http://localhost:3000/${lang}/api?keyname=projectsData`,
                     {
@@ -154,9 +154,9 @@ export const fetchProjectSingleData = (_title) => (dispatch, getState) => {
     let lang = state.lang;
 
     if(!cache)
-        console.log('-------------------- projectSingleData No Cache');
+        console.log('-------------------- projectSingleData No Cache --------------------');
     else
-        console.log('-------------------- projectSingleData Cached')
+        console.log('-------------------- projectSingleData Cached --------------------')
 
     const fetchData = (resolve) => {
         dispatch(projectSingleDataRequest());
@@ -170,8 +170,8 @@ export const fetchProjectSingleData = (_title) => (dispatch, getState) => {
                     dispatch(projectSingleDataSuccess(response.results[0]));
                     myCache.put('projectSingleData', { data: response.results[0], lang: lang });
                     resolve(response.results[0])
-                    console.log('-------------------- projectSingleData has been Cached')
-                    console.log('-------------------- Client cache:',myCache.keys())
+                    console.log('-------------------- projectSingleData has been Cached --------------------')
+                    console.log('-------------------- Client cache:',myCache.keys(),'--------------------')
 
                     fetch(`http://localhost:3000/${lang}/api?keyname=projectSingleData`,
                     {
@@ -204,7 +204,7 @@ const initialState = {
     projectSingleData:null,
 };
 const reducer = (state = initialState, action) => {
-    console.log('action:',action.type);
+    console.log('-------------------- Action:',action.type,'--------------------');
     switch (action.type) {
         case UPDATE_LANGUAGE:
             return { ...state, lang: action.lang };
