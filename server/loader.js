@@ -90,7 +90,7 @@ export default (req, res) => {
               // Push data to client
               if(myCache.get(key)){
                 store.dispatch(component.WrappedComponent.pushData(myCache.get(key).data));
-                console.log('-------------------- Pushed data to client --------------------',key);
+                console.log('-------------------- Pushed [',"'"+key+"'",'] ----- to -----> client store');
               }
               
               if(match){
