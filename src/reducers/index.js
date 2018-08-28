@@ -42,18 +42,20 @@ const promise = ( dataSuccess, dispatch, fetchData, cache, lang, title ) => {
             fetchData(resolve);
         }
         else{
-            if(cache.lang !== lang){
-                fetchData(resolve);
-                console.log('-------------------- different language, fetch again');
-            }
-            else if(cache.uid !== title){
-                fetchData(resolve);
-                console.log('-------------------- but different post title, fetch again');
-            }
-            else{
-                dispatch(dataSuccess(cache.data));
-                resolve(cache.data);
-                console.log('-------------------- use cache data');
+            if(cache.data){
+                if(cache.lang !== lang){
+                    fetchData(resolve);
+                    console.log('-------------------- different language, fetch again');
+                }
+                else if(cache.data.uid !== title){
+                    fetchData(resolve);
+                    console.log('-------------------- but different post title, fetch again');
+                }
+                else{
+                    dispatch(dataSuccess(cache.data));
+                    resolve(cache.data);
+                    console.log('-------------------- use cache data');
+                }
             }
         }
     });
@@ -170,6 +172,13 @@ export const fetchProjectSingleData = (_title) => (dispatch, getState) => {
                     resolve(response.results[0])
                     console.log('-------------------- projectSingleData has been Cached')
                     console.log('-------------------- Client cache:',myCache.keys())
+
+                    fetch(`http://localhost:3000/${lang}/api?keyname=projectSingleData`,
+                    {
+                        method:'POST',
+                        body: JSON.stringify(response.results[0]),
+                        headers:{'Content-Type': 'application/json'}
+                    })
                 }
             })
             .catch(err => dispatch(projectSingleDataError(err)));
