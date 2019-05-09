@@ -1,5 +1,5 @@
 Start development width `yarn start`  
-Start SSR with `yarn build && yarn serve`
+Start SSR with `yarn build` `yarn ser`
 
 
 
