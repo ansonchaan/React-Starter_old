@@ -10,24 +10,19 @@ import { Provider } from 'react-redux';
 import { StaticRouter } from 'react-router';
 import { Frontload, frontloadServerRender } from 'react-frontload';
 import Loadable from 'react-loadable';
-import { matchPath } from "react-router-dom";
 
 // Our store, entrypoint, and manifest
 import createStore from '../src/store';
-import App from '../src/app';
+import App from '../src/App';
 import manifest from '../build/asset-manifest.json';
+
+import { matchPath } from "react-router-dom";
 import { updateLanguage } from '../src/reducers';
-
 import routes from './routes'
-
 import myCache from 'memory-cache'
-
-// import schedule from 'node-schedule'
 
 // Some optional Redux functions related to user authentication
 // import { setCurrentUser, logoutUser } from '../src/modules/auth';
-
-let j=null;
 
 // LOADER
 export default (req, res) => {
@@ -110,8 +105,6 @@ export default (req, res) => {
 
         return currentActions;
       },[]);
-    
-
 
       Promise.all(promise)
       .then(s => {
@@ -131,36 +124,19 @@ export default (req, res) => {
           data for that page. We take all that information and compute the appropriate state to send to the user. This is
           then loaded into the correct components and sent as a Promise to be handled below.
         */
-        // frontloadServerRender(() =>
-        //   renderToString(
-        //     <Loadable.Capture report={m => modules.push(m)}>
-        //       <Provider store={store}>
-        //         <StaticRouter location={req.url} context={context}>
-        //           <Frontload isServer>
-        //             <App />
-        //           </Frontload>
-        //         </StaticRouter>
-        //       </Provider>
-        //     </Loadable.Capture>
-        //   )
-        // )
-        
-        new Promise(function(resolve){
-          resolve(
-            renderToString(
-              // <Loadable.Capture report={m => modules.push(m)}>
-                <Provider store={store}>
-                  <StaticRouter location={req.url} context={context}>
-                    {/* <Frontload isServer> */}
-                      <App />
-                    {/* </Frontload> */}
-                  </StaticRouter>
-                </Provider>
-              // </Loadable.Capture>
-            )
+        frontloadServerRender(() =>
+          renderToString(
+            <Loadable.Capture report={m => modules.push(m)}>
+              <Provider store={store}>
+                <StaticRouter location={req.url} context={context}>
+                  <Frontload isServer={true}>
+                    <App />
+                  </Frontload>
+                </StaticRouter>
+              </Provider>
+            </Loadable.Capture>
           )
-        })
-        .then(routeMarkup => {
+        ).then(routeMarkup => {
           if (context.url) {
             // If context has a url property, then we need to handle a redirection in Redux Router
             res.writeHead(302, {
@@ -179,7 +155,7 @@ export default (req, res) => {
 
             // Let's format those assets into pretty <script> tags
             const extraChunks = extractAssets(manifest, modules).map(
-              c => `<script type="text/javascript" src="/${c}"></script>`
+              c => `<script type="text/javascript" src="/${c.replace(/^\//, '')}"></script>`
             );
 
             // We need to tell Helmet to compute the right meta tags, title, and such
