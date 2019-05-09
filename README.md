@@ -1,8 +1,9 @@
-Getting start
-`yarn ser`
+Start development width `yarn start`  
+Start SSR with `yarn ser`
 
-Source:
 
+
+Source:  
 create-react-app
 https://github.com/facebook/create-react-app
 
