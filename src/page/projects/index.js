@@ -25,9 +25,9 @@ class Projects extends Component {
   static pushData = data => fetchDataSuccess(this.pageName, data);
 
   componentWillMount() {
-    if (!this.props.projectsData)
+    if (!this.props.projectsData) {
       this.props.dispatch(fetchDataBy(this.pageName, this.query));
-    else {
+    } else {
       if (this.props.projectsData[0].lang.split("-")[0] !== this.props.lang)
         this.props.dispatch(fetchDataBy(this.pageName, this.query));
     }

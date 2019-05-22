@@ -47,12 +47,14 @@ const promise = (
             "-------------------- But different single post title, fetch again"
           );
         } else {
-          dispatch(fetchDataSuccess(pageName, cache.data));
+          // dispatch(fetchDataSuccess(pageName,cache.data));
           resolve(cache.data);
           console.log("-------------------- Used cache data");
         }
       }
     }
+  }).catch(function(e) {
+    console.log(e);
   });
 };
 
@@ -108,7 +110,6 @@ export const fetchDataBy = (pageName, query, singlePostTitle) => (
                 data: response.results,
                 lang: lang
               });
-              resolve(response.results);
               console.log(
                 `-------------------- ${pageName}Data has been Cached`
               );
@@ -126,6 +127,7 @@ export const fetchDataBy = (pageName, query, singlePostTitle) => (
                 console.log("Error:", error.message);
                 throw error;
               });
+              resolve(response.results);
             }
           })
           .catch(err => dispatch(fetchDataError(err)));

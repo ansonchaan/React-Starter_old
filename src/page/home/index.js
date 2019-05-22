@@ -34,9 +34,9 @@ class Home extends Component {
   }
 
   componentWillReceiveProps(nextProps) {
-    if (nextProps.lang !== this.props.lang) {
-      this.props.dispatch(fetchDataBy(this.pageName, this.query));
-    }
+    // if (nextProps.lang !== this.props.lang) {
+    //     this.props.dispatch(fetchDataBy(this.pageName, this.query));
+    // }
   }
 
   render() {
