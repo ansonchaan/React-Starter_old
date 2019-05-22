@@ -4,6 +4,7 @@ import { Link } from "react-router-dom";
 import { connect } from "react-redux";
 import Html from "../../_component/html";
 import { fetchDataBy, fetchDataSuccess } from "../../reducers";
+import "../../sass/page/projects.scss";
 
 class Projects extends Component {
   static pageName = "projects";

@@ -1,0 +1,39 @@
+$tablet: 1024px;
+$mobile: 700px;
+
+@import "../../node_modules/foundation-sites/scss/util/unit";
+@import "./global/reset";
+@import "./global/fonts";
+@import "./global/color";
+
+@mixin transform($transforms) {
+  -webkit-transform: $transforms;
+  transform: $transforms;
+}
+
+@mixin h_center($deg: null) {
+  position: absolute;
+  left: 50%;
+  @include transform(translate3d(-50%, 0, 0) $deg);
+}
+@mixin v_center($deg: null) {
+  position: absolute;
+  top: 50%;
+  @include transform(translate3d(0, -50%, 0) $deg);
+}
+@mixin hv_center($deg: null) {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  @include transform(translate3d(-50%, -50%, 0) $deg);
+}
+@mixin fadeIn_anim {
+  @keyframes fadeIn {
+    from {
+      opacity: 0;
+    }
+    to {
+      opacity: 1;
+    }
+  }
+}

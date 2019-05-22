@@ -1,0 +1,55 @@
+// @font-face {
+//   font-family: 'TecoSansStencil';
+//   src: url('../fonts/TecoSansStencil.eot'); /* IE9 Compat Modes */
+//   src: url('../fonts/TecoSansStencil.eot?#iefix') format('embedded-opentype'), /* IE6-IE8 */
+//        url('../fonts/TecoSansStencil.woff') format('woff'), /* Modern Browsers */
+//        url('../fonts/TecoSansStencil.ttf')  format('truetype'), /* Safari, Android, iOS */
+//        url('../fonts/TecoSansStencil.svg#d6eae7a12a8d60651ae3073d0b497b4a') format('svg'); /* Legacy iOS */
+
+//   font-style:   normal;
+//   font-weight:  400;
+// }
+
+// @font-face {
+//   font-family: 'TecoSansStencil Light';
+//   src: url('../fonts/TecoSansStencil-Light-Light.eot'); /* IE9 Compat Modes */
+//   src: url('../fonts/TecoSansStencil-Light-Light.eot?#iefix') format('embedded-opentype'), /* IE6-IE8 */
+//        url('../fonts/TecoSansStencil-Light-Light.woff') format('woff'), /* Modern Browsers */
+//        url('../fonts/TecoSansStencil-Light-Light.ttf')  format('truetype'), /* Safari, Android, iOS */
+//        url('../fonts/TecoSansStencil-Light-Light.svg#c9851e21217aa63c5485106c292b0355') format('svg'); /* Legacy iOS */
+
+//   font-style:   normal;
+//   font-weight:  200;
+// }
+
+$defaultFont: "TecoSansStencil";
+
+@mixin h1($fontsize: 34, $lineHeight: 48) {
+  font-size: rem-calc($fontsize);
+  line-height: rem-calc($lineHeight);
+}
+
+h1,
+.h1 {
+  @include h1;
+}
+
+h2 {
+}
+h3 {
+}
+h4 {
+}
+h5 {
+}
+h6 {
+}
+
+// tablet
+@media only screen and (max-width: $tablet) {
+  @include h1(22, 34);
+}
+
+// mobile
+@media only screen and (max-width: $mobile) {
+}

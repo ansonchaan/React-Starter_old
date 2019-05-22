@@ -1,0 +1,6 @@
+@import "../_settings";
+
+#home {
+  padding: rem-calc(10px);
+  @include transform(translate3d(0, 0, 0));
+}
