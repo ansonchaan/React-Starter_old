@@ -87,9 +87,7 @@ export default (req, res) => {
                 component.WrappedComponent.pushData(myCache.get(key).data)
               );
               console.log(
-                "-------------------- Pushed [",
-                "'" + key + "'",
-                "] ----- to -----> client store"
+                `-------------------- Pushed ['${key}'] ----- to -----> client store`
               );
             }
 
