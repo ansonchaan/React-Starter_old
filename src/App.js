@@ -3,6 +3,7 @@ import { Switch, Route, Redirect } from "react-router-dom";
 import PageWrap from "./_component/pagewrap";
 import { updateLanguage } from "../src/reducers";
 import { connect } from "react-redux";
+import "./sass/style.scss";
 
 class App extends Component {
   constructor(props) {
@@ -16,7 +17,11 @@ class App extends Component {
     this.isMobile = this.isMobile.bind(this);
     this.getDevice = this.getDevice.bind(this);
     this.onResize = this.onResize.bind(this);
+    this.adjustFontSize = this.adjustFontSize.bind(this);
+    this.baseFontRatio = 16 / 1440;
+    this.fontMultiplier = 0.84375;
   }
+
 
   getDevice() {
     try {
@@ -77,6 +82,16 @@ class App extends Component {
     }
   }
 
+  adjustFontSize = function(){
+    const width = window.innerWidth;
+    const roundNumber = Math.round(this.baseFontRatio * width * this.fontMultiplier);
+    console.log(width,roundNumber);
+    if(roundNumber >= 16)
+        document.documentElement.style.fontSize = roundNumber + 'px';
+    else
+        document.documentElement.style.fontSize = '';
+  }
+
   onResize() {
     this.setState({
       deviceType: this.getDevice()
@@ -84,6 +99,7 @@ class App extends Component {
     this.setState({
       isMobile: this.isMobile()
     });
+    this.adjustFontSize();
   }
 
   componentWillMount() {
