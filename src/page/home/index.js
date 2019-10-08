@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
-import { Link } from "react-router-dom";
+// import { Link } from "react-router-dom";
 import { connect } from "react-redux";
 import Html from "../../_component/html";
 import { fetchDataBy, fetchDataSuccess } from "../../reducers";
@@ -17,48 +17,37 @@ class Home extends Component {
     super(props);
 
     this.pageName = Home.pageName;
-    this.query = {};
     this.state = {};
   }
 
-  static actions = () => [fetchDataBy(this.pageName, this.query)];
+  static actions = () => [fetchDataBy(this.pageName)];
 
   static pushData = data => fetchDataSuccess(this.pageName, data);
 
   componentWillMount() {
     if (!this.props.homeData) {
-      this.props.dispatch(fetchDataBy(this.pageName, this.query));
-    } else {
-      if (this.props.homeData.lang.split("-")[0] !== this.props.lang)
-        this.props.dispatch(fetchDataBy(this.pageName, this.query));
+      this.props.dispatch(fetchDataBy(this.pageName));
     }
+    // else {
+    //   if (this.props.homeData.lang.split("-")[0] !== this.props.lang)
+    //     this.props.dispatch(fetchDataBy(this.pageName));
+    // }
   }
 
   componentWillReceiveProps(nextProps) {
-    // if (nextProps.lang !== this.props.lang) {
-    //     this.props.dispatch(fetchDataBy(this.pageName, this.query));
-    // }
+    if (nextProps.lang !== this.props.lang) {
+      this.props.dispatch(fetchDataBy(this.pageName));
+    }
   }
 
   render() {
     if (this.props.homeData) {
-      const data = this.props.homeData.data;
+      const data = this.props.homeData;
 
       return (
         <Html id="home" title="Home" description={`This is Home page!`}>
           <div>
-            <h1>Home </h1>
-            <br />
-            <h4>featured posts</h4>
-            <ul>
-              {data.featured_posts.map((data, index) => (
-                <li key={index}>
-                  <Link to={`/${this.props.lang}/project/${data.posts.uid}/`}>
-                    {data.featured_title[0].text}
-                  </Link>
-                </li>
-              ))}
-            </ul>
+            <ul>{data.title}</ul>
           </div>
         </Html>
       );
@@ -70,7 +59,7 @@ class Home extends Component {
 const mapStateToProps = state => {
   return {
     lang: state.lang,
-    homeData: state.homeData ? state.homeData[0] : null
+    homeData: state.homeData ? state.homeData : null
   };
 };
 

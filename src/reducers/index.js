@@ -1,4 +1,4 @@
-import Prismic from "prismic-javascript";
+// import Prismic from "prismic-javascript";
 import config from "../config";
 import myCache from "memory-cache";
 
@@ -58,84 +58,71 @@ const promise = (
   });
 };
 
-export const fetchDataBy = (pageName, query, singlePostTitle) => (
-  dispatch,
-  getState
-) => {
+export const fetchDataBy = pageName => (dispatch, getState) => {
   const state = getState();
   const cache = myCache.get(`${pageName}Data`);
   let { lang } = state;
-  let apiConfig = {};
+  // let apiConfig = {};
 
   if (!cache) console.log(`-------------------- ${pageName}Data No Cache`);
   else console.log(`-------------------- ${pageName}Data Cached`);
 
-  switch (pageName) {
-    case "home":
-      apiConfig = {
-        type: "document.type",
-        getFrom: "home"
-      };
-      break;
-    case "projects":
-      apiConfig = {
-        type: "document.type",
-        getFrom: "posts"
-      };
-      break;
-    case "projectSingle":
-      apiConfig = {
-        type: "my.posts.uid",
-        getFrom: decodeURIComponent(singlePostTitle)
-      };
-      break;
+  // switch (pageName) {
+  //   case "home":
+  // apiConfig = {
+  //   type: "document.type",
+  //   getFrom: "home"
+  // };
+  //   break;
+  // case "projects":
+  // apiConfig = {
+  //   type: "document.type",
+  //   getFrom: "posts"
+  // };
+  // break;
+  // case "projectSingle":
+  // apiConfig = {
+  //   type: "my.posts.uid",
+  //   getFrom: decodeURIComponent(singlePostTitle)
+  // };
+  // break;
 
-    default:
-      apiConfig = {};
-  }
+  // default:
+  // apiConfig = {};
+  // }
 
   const fetchData = resolve => {
-    dispatch(fetchDataRequest());
-    Prismic.api(config.apiEndpoint, { accessToken: config.accessToken }).then(
-      api => {
-        api
-          .query(Prismic.Predicates.at(apiConfig.type, apiConfig.getFrom), {
-            ...query,
-            lang: `${lang}-${lang === "zh" ? "hk" : "us"}`
-          })
-          .then(response => {
-            if (response) {
-              dispatch(fetchDataSuccess(pageName, response.results));
-              myCache.put(`${pageName}Data`, {
-                data: response.results,
-                lang: lang
-              });
-              console.log(
-                `-------------------- ${pageName}Data has been Cached`
-              );
-              console.log(`-------------------- Client cache:`, myCache.keys());
+    const results = config[lang][pageName];
 
-              // save data to server
-              fetch(
-                `http://localhost:3000/${lang}/api?keyname=${pageName}Data`,
-                {
-                  method: "POST",
-                  body: JSON.stringify(response.results),
-                  headers: { "Content-Type": "application/json" }
-                }
-              ).catch(function(error) {
-                console.log("Error:", error.message);
-                throw error;
-              });
-              resolve(response.results);
-            }
-          })
-          .catch(err => dispatch(fetchDataError(err)));
-      }
-    );
+    // start message
+    dispatch(fetchDataRequest());
+
+    // save data to store
+    dispatch(fetchDataSuccess(pageName, results));
+
+    // put data to cache
+    myCache.put(`${pageName}Data`, {
+      data: results,
+      lang: lang
+    });
+    console.log(`-------------------- ${pageName}Data has been Cached`);
+    console.log(`-------------------- Client cache:`, myCache.keys());
+
+    // save data to server
+    fetch(`http://localhost:3000/${lang}/api?keyname=${pageName}Data`, {
+      method: "POST",
+      body: JSON.stringify(results),
+      headers: { "Content-Type": "application/json" }
+    }).catch(function(error) {
+      console.log("Error:", error.message);
+      throw error;
+    });
+    resolve(results);
+
+    console.log(pageName, config[lang][pageName]);
   };
 
-  return promise(pageName, dispatch, fetchData, cache, lang, singlePostTitle);
+  return promise(pageName, dispatch, fetchData, cache, lang);
 };
 
 //
@@ -162,9 +149,8 @@ const reducer = (state = initialState, action) => {
           return { ...state, homeData: action.data };
         case "projects":
           return { ...state, projectsData: action.data };
-        case "projectSingle":
-          return { ...state, projectSingleData: action.data };
       }
+      break;
 
     default:
       return state;
