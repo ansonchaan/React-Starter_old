@@ -43,13 +43,7 @@
     "precommit": "lint-staged",
     "ser": "cross-env NODE_ENV=development node ./server/index.js"
   },
-  "husky": {
-    "hooks": {
-      "pre-commit": "pretty-quick --staged"
-    }
-  },
   "devDependencies": {
-    "husky": "^1.1.0",
     "prettier": "1.14.3",
     "pretty-quick": "^1.7.0"
   },

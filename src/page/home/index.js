@@ -29,8 +29,15 @@ class Home extends Component {
     if (!this.props.homeData) {
       this.props.dispatch(fetchDataBy(this.pageName, this.query));
     } else {
-      if (this.props.homeData.lang.split("-")[0] !== this.props.lang)
+      if (this.props.homeData.lang.split("-")[0] !== this.props.lang){
         this.props.dispatch(fetchDataBy(this.pageName, this.query));
+      }
+    }
+  }
+  
+  componentDidUpdate(prevProps) {
+    if (prevProps.lang !== this.props.lang){
+      this.props.dispatch(fetchDataBy(this.pageName, this.query));
     }
   }
 
